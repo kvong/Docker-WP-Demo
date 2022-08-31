@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+    wordpress:
+        container_name: wp
+        image: wordpress
+        restart: always
+        ports:
+            ['81:80']
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: mysql_user
+            WORDPRESS_DB_PASSWORD: password
+            WORDPRESS_DB_NAME: example_db
+        volumes:
+            ['./wp-data:/var/www/html']
+    db:
+        container_name: mysql
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_DATABASE: example_db
+            MYSQL_USER: mysql_user
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: password
+        volumes:
+            ['./db:/var/lib/mysql']
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        depends_on: ['db']
+        ports: ['82:80']
+        links: ['db:db']
+        environment:
+            PMA_ARBITRARY: 1
+            PMA_HOST: db
+            PMA_USER: mysql_user
+            PMA_PASSWORD: password
