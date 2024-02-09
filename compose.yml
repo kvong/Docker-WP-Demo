@@ -13,7 +13,8 @@ services:
             WORDPRESS_DB_PASSWORD: ${DB_PASS}
             WORDPRESS_DB_NAME: ${DB_NAME}
         volumes:
-            - "${LOCAL_VOL_DATA}:/var/www/html"
+            - "${LOCAL_VOL_WP_DATA}:/var/www/html"
+            - "${LOCAL_VOL_CONFIG_1}:/usr/local/etc/php/conf.d/uploads.ini"
     db:
         container_name: mysql
         image: mysql:5.7
@@ -21,7 +22,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: password
         volumes:
-            - './db:/var/lib/mysql'
+            - '${LOCAL_VOL_DB_DATA}:/var/lib/mysql'
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
@@ -32,6 +33,6 @@ services:
         environment:
             PMA_ARBITRARY: 1
             PMA_HOST: db
-            PMA_USER: root
-            PMA_PASSWORD: password
+            PMA_USER: ${DB_USER}
+            PMA_PASSWORD: ${DB_PASS}
             UPLOAD_LIMIT: 1G
