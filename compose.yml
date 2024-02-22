@@ -28,7 +28,7 @@ services:
         container_name: phpmyadmin
         restart: always
         depends_on: ['db']
-        ports: ['82:80']
+        ports: ['80:80']
         links: ['db:db']
         environment:
             PMA_ARBITRARY: 1
